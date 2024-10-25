@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "target": "ES2019",                   // Set the ECMAScript target to a modern version
+      "module": "CommonJS",                 // Use CommonJS module system for Node.js
+      "lib": ["ES2019"],                    // Use ECMAScript 2019 library
+      "strict": true,                       // Enable strict type checking
+      "esModuleInterop": true,              // Support for importing ES modules into Node.js
+      "skipLibCheck": true,                 // Skip checking of type declaration files
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "dist",                     // Output directory for compiled files
+      "rootDir": "src",                     // Source directory for TypeScript files
+      "resolveJsonModule": true,            // Support importing .json files
+      "noEmitOnError": true,                // Prevent emitting files on errors
+      "moduleResolution": "node",           // Resolve modules in Node.js style
+      "allowSyntheticDefaultImports": true
+    },
+    "include": ["src/**/*.ts"],             // Only include TypeScript files in the src folder
+    "exclude": ["node_modules"],            // Exclude node_modules folder
+  }
+  

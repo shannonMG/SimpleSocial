@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",                  // Target ECMAScript version
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],  // Libraries used by the client (browser environment)
+    "allowJs": false,                    // Allow JavaScript files
+    "skipLibCheck": true,                // Skip type checking of all declaration files
+    "esModuleInterop": true,             // Support for ES module and CommonJS module interop
+    "allowSyntheticDefaultImports": true,
+    "strict": true,                      // Enable strict type checking
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",                  // Module system
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",                  // React JSX support
+    "noEmit": true,                      // Don't emit any compiled output, since Vite will handle that
+    "baseUrl": "./src",                  // Base URL for imports
+    "paths": {
+      "@components/*": ["components/*"], // Example: import path shortcuts for components
+      "@hooks/*": ["hooks/*"]
+    }
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
