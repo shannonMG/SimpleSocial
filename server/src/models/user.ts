@@ -17,8 +17,8 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public id!: number;
   public email!: string;
   public password!: string;
-  public location?: string;
-  public time_zone?: string;
+  public location?: string; // Optional location attribute
+  public time_zone?: string; // Optional time zone attribute
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -44,9 +44,11 @@ export function UserFactory(sequelize: Sequelize): typeof User {
       },
       location: {
         type: DataTypes.STRING,
+        allowNull: true, // Optional in database
       },
       time_zone: {
         type: DataTypes.STRING,
+        allowNull: true, // Optional in database
       },
     },
     {

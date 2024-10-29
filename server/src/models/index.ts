@@ -1,13 +1,14 @@
-import { Sequelize } from 'sequelize';
-import { UserFactory } from './user';
-import { CircleFactory } from './circle';
-import { CircleMembersFactory } from './circleMembers';
-import { PostFactory } from './post';
-import { MediaFactory } from './media';
-import { CommentFactory } from './comment';
+// src/models/index.ts
 
-const sequelize = new Sequelize(...);
+import sequelize from '../config/connection.js'; // Import sequelize from configuration
+import { UserFactory } from './user.js';
+import { CircleFactory } from './circle.js';
+import { CircleMembersFactory } from './circleMembers.js';
+import { PostFactory } from './post.js';
+import { MediaFactory } from './media.js';
+import { CommentFactory } from './comment.js';
 
+// Initialize models
 const User = UserFactory(sequelize);
 const Circle = CircleFactory(sequelize);
 const CircleMembers = CircleMembersFactory(sequelize);
@@ -15,7 +16,9 @@ const Post = PostFactory(sequelize);
 const Media = MediaFactory(sequelize);
 const Comment = CommentFactory(sequelize);
 
-// One-to-Many
+// Define associations
+
+// One-to-Many Associations
 User.hasMany(Post, { foreignKey: 'user_id' });
 Post.belongsTo(User, { foreignKey: 'user_id' });
 
@@ -34,12 +37,13 @@ Media.belongsTo(Circle, { foreignKey: 'circle_id' });
 Post.hasMany(Comment, { foreignKey: 'commentable_id', constraints: false });
 Comment.belongsTo(Post, { foreignKey: 'commentable_id', constraints: false });
 
-// Many-to-Many through Circle_Members
+// Many-to-Many Association through CircleMembers
 User.belongsToMany(Circle, { through: CircleMembers, foreignKey: 'user_id' });
 Circle.belongsToMany(User, { through: CircleMembers, foreignKey: 'circle_id' });
 
-// Polymorphic Comment association
+// Polymorphic Association for Comment
 Comment.belongsTo(Post, { foreignKey: 'commentable_id', constraints: false });
 Comment.belongsTo(Media, { foreignKey: 'commentable_id', constraints: false });
 
+// Export models and sequelize instance
 export { sequelize, User, Circle, CircleMembers, Post, Media, Comment };
