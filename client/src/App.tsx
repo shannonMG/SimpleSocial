@@ -9,6 +9,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Landingpage />}>
+          {/* Nested routes for login and signup */}
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
         </Route>
@@ -17,4 +18,4 @@ const App = () => {
   );
 };
 
-export default App
+export default App;
