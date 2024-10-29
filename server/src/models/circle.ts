@@ -5,10 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 interface CircleAttributes {
   id: number;
   name: string;
-  permission_key: string; //can change this for invite code instead of permissio key
-  assignedUserId: number; //may change this to ownerId
-
-  
+  permission_key: string;
+  assignedUserId?: number; // Optional to reflect potential owner or assigned user
 }
 
 interface CircleCreationAttributes extends Optional<CircleAttributes, 'id'> {}
@@ -17,7 +15,7 @@ export class Circle extends Model<CircleAttributes, CircleCreationAttributes> im
   public id!: number;
   public name!: string;
   public permission_key!: string;
-  public assignedUserId!: number;
+  public assignedUserId?: number;
 
   // associated User model
   public readonly assignedUser?: User;
@@ -41,10 +39,8 @@ export function CircleFactory(sequelize: Sequelize): typeof Circle {
       permission_key: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: uuidv4// ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+        defaultValue: uuidv4, // Automatically generates a unique key
       },
-      
-      
       assignedUserId: {
         type: DataTypes.INTEGER,
         allowNull: true,
