@@ -1,6 +1,9 @@
 {
   "dependencies": {
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
     "react": "^18.3.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "sequelize": "^6.37.5"
   }
 }
