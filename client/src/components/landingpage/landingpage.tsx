@@ -1,30 +1,33 @@
 // src/pages/LandingPage.tsx
-
+import React from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 // import Footer from '../components/Footer';
+import '../../index.css';
+import styles from './LandingPage.module.css'; // Import the CSS module
 
 const LandingPage = () => {
   const location = useLocation();
-
-  // Check if the path is exactly '/' to display the welcome message and links
   const isBaseRoute = location.pathname === '/';
 
   return (
-    <div>
+    <div className={styles.landingContainer}>
       {isBaseRoute && (
-        <>
-          <h1>Welcome to SimpleSocial</h1>
+        <div className={styles.landingContent}>
+          <h1 className={styles.heading}>Welcome to SimpleSocial</h1>
           <nav>
-            <Link to="/login">Login</Link> | <Link to="/signup">Sign Up</Link>
+            <Link to="/login" className={styles.navLink}>
+              Login
+            </Link>
+            <Link to="/signup" className={styles.navLink}>
+              Sign Up
+            </Link>
           </nav>
-        </>
+        </div>
       )}
-
-      {/* Render either Login or Signup based on the current route */}
+      {/* Render Login or Signup components */}
       <Outlet />
-
-      {/* Footer will always be displayed */}
-      {/* <Footer /> */}
+      {/* Footer */}
+      {/* <Footer className={styles.footer} /> */}
     </div>
   );
 };

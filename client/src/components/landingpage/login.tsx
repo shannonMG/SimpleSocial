@@ -1,56 +1,41 @@
-import { useState, FormEvent, ChangeEvent } from "react";
-
-// import Auth from '../utils/auth';
-// import { login } from "../api/authAPI";
+// src/components/Login.tsx
+import React, { useState } from 'react';
+import '../../index.css'
+import styles from './loginandsignup.module.css';
 
 const Login = () => {
-  const [loginData, setLoginData] = useState({
-    username: '',
-    password: ''
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setLoginData({
-      ...loginData,
-      [name]: value
-    });
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const data = await login(loginData);
-      Auth.login(data.token);
-    } catch (err) {
-      console.error('Failed to login', err);
-    }
+    // Handle login logic
   };
 
   return (
-    <div className='container'>
-      <form className='form' onSubmit={handleSubmit}>
-        <h1>Login</h1>
-        <label >Username</label>
-        <input 
-          type='text'
-          name='username'
-          value={loginData.username || ''}
-          onChange={handleChange}
+    <div className={styles.container}>
+      <form className={styles.formCard} onSubmit={handleSubmit}>
+        <h2 className={styles.heading}>Login</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className={styles.input}
+          required
         />
-      <label>Password</label>
-        <input 
-          type='password'
-          name='password'
-          value={loginData.password || ''}
-          onChange={handleChange}
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className={styles.input}
+          required
         />
-        <button type='submit'>Submit Form</button>
+        <button type="submit" className={styles.button}>Login</button>
       </form>
     </div>
-    
-  )
+  );
 };
 
 export default Login;
-
