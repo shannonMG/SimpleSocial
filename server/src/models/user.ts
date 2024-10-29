@@ -18,6 +18,8 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public username!: string;
   public email!: string;
   public password!: string;
+  public location!: string; //may not be required so we can remove the ! is need be
+  public timezone!: string // same as above
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -47,6 +49,16 @@ export function UserFactory(sequelize: Sequelize): typeof User {
         allowNull: false,
       },
       password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      location: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      timezone: {
         type: DataTypes.STRING,
         allowNull: false,
       },
