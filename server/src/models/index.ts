@@ -3,7 +3,7 @@
 import sequelize from '../config/connection.js'; // Import sequelize from configuration
 import { UserFactory } from './user.js';
 import { CircleFactory } from './circle.js';
-import { CircleMembersFactory } from './circleMembers.js';
+import { CircleUsersFactory } from './circleUsers.js';
 import { PostFactory } from './post.js';
 import { MediaFactory } from './media.js';
 import { CommentFactory } from './comment.js';
@@ -11,7 +11,7 @@ import { CommentFactory } from './comment.js';
 // Initialize models
 const User = UserFactory(sequelize);
 const Circle = CircleFactory(sequelize);
-const CircleMembers = CircleMembersFactory(sequelize);
+const CircleUsers = CircleUsersFactory(sequelize);
 const Post = PostFactory(sequelize);
 const Media = MediaFactory(sequelize);
 const Comment = CommentFactory(sequelize);
@@ -34,16 +34,13 @@ Post.belongsTo(Circle, { foreignKey: 'circle_id' });
 Circle.hasMany(Media, { foreignKey: 'circle_id' });
 Media.belongsTo(Circle, { foreignKey: 'circle_id' });
 
-Post.hasMany(Comment, { foreignKey: 'commentable_id', constraints: false });
-Comment.belongsTo(Post, { foreignKey: 'commentable_id', constraints: false });
-
-// Many-to-Many Association through CircleMembers
-User.belongsToMany(Circle, { through: CircleMembers, foreignKey: 'user_id' });
-Circle.belongsToMany(User, { through: CircleMembers, foreignKey: 'circle_id' });
-
 // Polymorphic Association for Comment
 Comment.belongsTo(Post, { foreignKey: 'commentable_id', constraints: false });
 Comment.belongsTo(Media, { foreignKey: 'commentable_id', constraints: false });
 
+// Many-to-Many Association through CircleUsers
+User.belongsToMany(Circle, { through: CircleUsers, foreignKey: 'user_id' });
+Circle.belongsToMany(User, { through: CircleUsers, foreignKey: 'circle_id' });
+
 // Export models and sequelize instance
-export { sequelize, User, Circle, CircleMembers, Post, Media, Comment };
+export { sequelize, User, Circle, CircleUsers, Post, Media, Comment };
