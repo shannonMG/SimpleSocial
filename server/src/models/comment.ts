@@ -2,14 +2,14 @@
 
 import { Model, DataTypes, Sequelize, Optional } from 'sequelize';
 import Post from './post';  // Import Post model
-import Media from './media'; // Import Media model
+
 
 // Define Comment attributes
 interface CommentAttributes {
   id: number;
   user_id: number;
   comment_content: string;
-  commentable_type: 'post' | 'media';  // Polymorphic types
+  commentable_type: 'post' 
   commentable_id: number;
 }
 
@@ -19,7 +19,7 @@ class Comment extends Model<CommentAttributes, CommentCreationAttributes> implem
   public id!: number;
   public user_id!: number;
   public comment_content!: string;
-  public commentable_type!: 'post' | 'media';
+  public commentable_type!: 'post';
   public commentable_id!: number;
 
   public readonly createdAt!: Date;
@@ -59,7 +59,6 @@ export function CommentFactory(sequelize: Sequelize): typeof Comment {
 
   // Set up polymorphic associations
   Comment.belongsTo(Post, { foreignKey: 'commentable_id', constraints: false });
-  Comment.belongsTo(Media, { foreignKey: 'commentable_id', constraints: false });
 
   return Comment;
 }
