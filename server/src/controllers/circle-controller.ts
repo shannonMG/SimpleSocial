@@ -6,13 +6,13 @@ import { User }from '../models/user.js';
 export const getAllCircle = async (_req: Request, res: Response) => {
   try {
     const circles = await Circle.findAll({
-      include: [
-        {
-          model: User,
-          as: 'assignedUser', // This should match the alias defined in the association
-          attributes: ['username'], // Include only the username attribute
-        },
-      ],
+      // include: [
+      //   // {
+      //   //   model: User,
+      //   //   as: 'assignedUser', // This should match the alias defined in the association
+      //   //   attributes: ['username'], // Include only the username attribute
+      //   // },
+      // ],
     });
     res.json(circles);
   } catch (error: any) {
