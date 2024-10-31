@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { Circle } from '../models/circle.js';
-import { Post } from '../models/post.js';
+import { Post } from '../models/post'
 
-// GET /tickets
+// GET /posts
 export const getAllPosts = async (_req: Request, res: Response) => {
   try {
     const posts = await Post.findAll({

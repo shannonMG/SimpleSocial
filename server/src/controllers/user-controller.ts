@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { User } from '../models/user.js';
 
+
+
 // GET /Users
 export const getAllUsers = async (_req: Request, res: Response) => {
   try {
@@ -30,11 +32,11 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
-// POST /Users
+// POST /Users/-->should I change the endpoint to /Users/register?
 export const createUser = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { email, password, location, time_zone } = req.body;
   try {
-    const newUser = await User.create({ username, password });
+    const newUser = await User.create({ email, password, location, time_zone });
     res.status(201).json(newUser);
   } catch (error: any) {
     res.status(400).json({ message: error.message });
@@ -44,12 +46,14 @@ export const createUser = async (req: Request, res: Response) => {
 // PUT /Users/:id
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { username, password } = req.body;
+  const { email, password, location, time_zone } = req.body;
   try {
     const user = await User.findByPk(id);
     if (user) {
-      user.username = username;
+      user.email = email;
       user.password = password;
+      user.location=location; 
+      user.time_zone=time_zone; 
       await user.save();
       res.json(user);
     } else {
