@@ -1,6 +1,4 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
-import { User } from './user';
-import { Circle } from './circle';
 
 interface CircleUsersAttributes {
   id: number;

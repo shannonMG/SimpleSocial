@@ -1,5 +1,6 @@
 import express from 'express';
 import type { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 import { User } from '../../models/index.js';
 
 const router = express.Router();
@@ -8,7 +9,7 @@ const router = express.Router();
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const users = await User.findAll({
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ['password'] }  // Exclude password from the response
     });
     res.json(users);
   } catch (error: any) {
@@ -16,7 +17,7 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
-// GET /users/:id - Get a user by id
+// GET /users/:id - Get a user by ID
 router.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -35,26 +36,45 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 // POST /users - Create a new user
 router.post('/', async (req: Request, res: Response) => {
-  const { username, email, password } = req.body;
+  const { email, password, location, time_zone } = req.body;
   try {
-    const newUser = await User.create({ username, email, password });
-    res.status(201).json(newUser);
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      email,
+      password: hashedPassword,
+      location,
+      time_zone
+    });
+    res.status(201).json({
+      id: newUser.id,
+      email: newUser.email,
+      location: newUser.location,
+      time_zone: newUser.time_zone
+    });
   } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
 });
 
-// PUT /users/:id - Update a user by id
+// PUT /users/:id - Update a user by ID
 router.put('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { username, password } = req.body;
+  const { email, password, location, time_zone } = req.body;
   try {
     const user = await User.findByPk(id);
     if (user) {
-      user.username = username;
-      user.password = password;
+      if (email) user.email = email;
+      if (password) user.password = await bcrypt.hash(password, 10);
+      if (location) user.location = location;
+      if (time_zone) user.time_zone = time_zone;
       await user.save();
-      res.json(user);
+      res.json({
+        id: user.id,
+        email: user.email,
+        location: user.location,
+        time_zone: user.time_zone
+      });
     } else {
       res.status(404).json({ message: 'User not found' });
     }
@@ -63,7 +83,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE /users/:id - Delete a user by id
+// DELETE /users/:id - Delete a user by ID
 router.delete('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
