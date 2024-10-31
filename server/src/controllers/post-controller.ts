@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Circle } from '../models/circle.js';
-import { Post } from '../models/post.js';
+import { Post } from '../models/post'
 
 // GET /posts
 export const getAllPosts = async (_req: Request, res: Response) => {

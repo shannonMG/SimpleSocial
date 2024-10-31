@@ -3,6 +3,7 @@ import { Circle } from '../models/circle.js';
 import { CircleUsers, CircleUsersFactory } from '../models/circleUsers.js';
 
 // GET /circles/:circleid
+//TO DO: add a query to get the users--query to users table if needed
 export const getAllCircleUsers = async (_req: Request, res: Response) => {
   try {
     const circleusers = await CircleUsers.findAll({
@@ -11,7 +12,7 @@ export const getAllCircleUsers = async (_req: Request, res: Response) => {
           model: CircleUsers,
           as: 'user_id', // This should match the alias defined in the association
           // attributes: ['username'], // not sure if this needs to be user or not 
-        },
+        }, 
       ],
     });
     res.json(circleusers);
@@ -21,13 +22,14 @@ export const getAllCircleUsers = async (_req: Request, res: Response) => {
 };
 
 // GET /posts/:id
+//may need an additonal query from the users table
 export const getCircleUsersById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const post = await CircleUsers.findByPk(id, {
       include: [
         {
-          model: Circle,
+          model: CircleUsers,
           as: 'user_id', // This should match the alias defined in the association
           // attributes: ['username'], // Not sure this needs to be username or circle?
         },
