@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Circle } from '../models/circle.js';
 import { User }from '../models/user.js';
 
-// GET /tickets
+// GET /circle
 export const getAllCircle = async (_req: Request, res: Response) => {
   try {
     const circles = await Circle.findAll({
@@ -43,7 +43,7 @@ export const getCircleById = async (req: Request, res: Response) => {
   }
 };
 
-// POST /tickets
+// POST /circle
 export const createCircle = async (req: Request, res: Response) => {
   const { name, permission_key, assignedUserId } = req.body;
   try {
