@@ -1,4 +1,5 @@
 import { Model, DataTypes, Sequelize, Optional } from 'sequelize';
+import bcrypt from 'bcryptjs';
 
 // Define the attributes for the User model
 interface UserAttributes {
@@ -22,6 +23,11 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  // Method to compare passwords for authentication
+  public async checkPassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
 }
 
 // Initialize the User model
@@ -54,6 +60,18 @@ export function UserFactory(sequelize: Sequelize): typeof User {
     {
       sequelize,
       tableName: 'users',
+      hooks: {
+        // Hash password before creating a new user
+        beforeCreate: async (user) => {
+          user.password = await bcrypt.hash(user.password, 10);
+        },
+        // Hash password before updating if it has been modified
+        beforeUpdate: async (user) => {
+          if (user.changed('password')) {
+            user.password = await bcrypt.hash(user.password, 10);
+          }
+        },
+      },
     }
   );
 

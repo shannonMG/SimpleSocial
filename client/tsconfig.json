@@ -1,26 +1,37 @@
 {
   "compilerOptions": {
-    "target": "ESNext",                  // Target ECMAScript version
-    "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],  // Libraries used by the client (browser environment)
-    "allowJs": false,                    // Allow JavaScript files
-    "skipLibCheck": true,                // Skip type checking of all declaration files
-    "esModuleInterop": true,             // Support for ES module and CommonJS module interop
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+
+    /* JavaScript Support */
+    "allowJs": true,
+    "checkJs": true,
+
+    /* Interop Constraints */
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,                      // Enable strict type checking
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",                  // Module system
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",                  // React JSX support
-    "noEmit": true,                      // Don't emit any compiled output, since Vite will handle that
-    "baseUrl": "./src",                  // Base URL for imports
-    "paths": {
-      "@components/*": ["components/*"], // Example: import path shortcuts for components
-      "@hooks/*": ["hooks/*"]
-    }
+
+    /* Type Checking */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "useUnknownInCatchVariables": true,
+
+    /* Specify root and output directories */
+    "rootDir": "src",
+    "outDir": "dist",
+
+    /* Required for project references if needed */
+    "composite": true
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["dist"]
 }

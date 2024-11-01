@@ -1,102 +1,54 @@
-import express from 'express';
-import type { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import { User } from '../../models/index.js';
+import express, { Request, Response, Router, RequestHandler } from 'express';
+import User from '../../models/user';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-const router = express.Router();
+const router: Router = express.Router();
+const SECRET_KEY = process.env.JWT_SECRET || '195f2752525a316a3f97dd8401fee9f65a0b0ec96c5ce22c9ccb42b2706b44b1b02b492b6801e8dadef9cf0ba90b8203698e8a2b80a43853282d517799bcfd64';
 
-// GET /users - Get all users
-router.get('/', async (_req: Request, res: Response) => {
+// Registration route
+const registerHandler: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    const users = await User.findAll({
-      attributes: { exclude: ['password'] }  // Exclude password from the response
-    });
-    res.json(users);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-});
+    const { email, password } = req.body;
 
-// GET /users/:id - Get a user by ID
-router.get('/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const user = await User.findByPk(id, {
-      attributes: { exclude: ['password'] }
-    });
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).json({ message: 'User not found' });
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      res.status(400).json({ message: 'User already exists' });
+      return;
     }
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-});
 
-// POST /users - Create a new user
-router.post('/', async (req: Request, res: Response) => {
-  const { email, password, location, time_zone } = req.body;
-  try {
-    // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({
-      email,
-      password: hashedPassword,
-      location,
-      time_zone
-    });
-    res.status(201).json({
-      id: newUser.id,
-      email: newUser.email,
-      location: newUser.location,
-      time_zone: newUser.time_zone
-    });
-  } catch (error: any) {
-    res.status(400).json({ message: error.message });
-  }
-});
+    const newUser = await User.create({ email, password: hashedPassword });
 
-// PUT /users/:id - Update a user by ID
-router.put('/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { email, password, location, time_zone } = req.body;
+    const token = jwt.sign({ id: newUser.id, email: newUser.email }, SECRET_KEY, { expiresIn: '1h' });
+    res.status(201).json({ message: 'User created', token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error creating user' });
+  }
+};
+
+// Login route
+const loginHandler: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    const user = await User.findByPk(id);
-    if (user) {
-      if (email) user.email = email;
-      if (password) user.password = await bcrypt.hash(password, 10);
-      if (location) user.location = location;
-      if (time_zone) user.time_zone = time_zone;
-      await user.save();
-      res.json({
-        id: user.id,
-        email: user.email,
-        location: user.location,
-        time_zone: user.time_zone
-      });
-    } else {
-      res.status(404).json({ message: 'User not found' });
-    }
-  } catch (error: any) {
-    res.status(400).json({ message: error.message });
-  }
-});
+    const { email, password } = req.body;
 
-// DELETE /users/:id - Delete a user by ID
-router.delete('/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const user = await User.findByPk(id);
-    if (user) {
-      await user.destroy();
-      res.json({ message: 'User deleted' });
-    } else {
-      res.status(404).json({ message: 'User not found' });
+    const user = await User.findOne({ where: { email } });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      res.status(400).json({ message: 'Invalid credentials' });
+      return;
     }
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-});
 
-export { router as userRouter };
+    const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, { expiresIn: '1h' });
+    res.status(200).json({ message: 'Logged in successfully', token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error logging in' });
+  }
+};
+
+// Attach the handlers to routes
+router.post('/register', registerHandler);
+router.post('/login', loginHandler);
+
+export default router;
