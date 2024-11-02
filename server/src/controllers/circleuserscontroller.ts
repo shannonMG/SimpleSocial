@@ -21,7 +21,7 @@ export const getAllCircleUsers = async (_req: Request, res: Response) => {
   }
 };
 
-// GET /posts/:id
+// GET circle/circleuser/:id
 //may need an additonal query from the users table
 export const getCircleUsersById = async (req: Request, res: Response) => {
   const { id } = req.params;
