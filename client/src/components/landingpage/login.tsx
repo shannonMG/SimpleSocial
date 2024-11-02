@@ -1,5 +1,5 @@
 // src/components/Login.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../../index.css'
 import styles from './loginandsignup.module.css';
 

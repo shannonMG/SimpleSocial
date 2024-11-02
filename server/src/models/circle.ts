@@ -1,5 +1,5 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
-import { User } from './user';
+import  User  from './user';
 import { v4 as uuidv4 } from 'uuid';
 
 interface CircleAttributes {

@@ -1,21 +1,36 @@
 {
-    "compilerOptions": {
-      "typeRoots": ["./node_modules/@types", "./src/types"],
-      "target": "ES2019",                   // Set the ECMAScript target to a modern version
-      "module": "CommonJS",                 // Use CommonJS module system for Node.js
-      "lib": ["ES2019"],                    // Use ECMAScript 2019 library
-      "strict": true,                       // Enable strict type checking
-      "esModuleInterop": true,              // Support for importing ES modules into Node.js
-      "skipLibCheck": true,                 // Skip checking of type declaration files
-      "forceConsistentCasingInFileNames": true,
-      "outDir": "dist",                     // Output directory for compiled files
-      "rootDir": "src",                     // Source directory for TypeScript files
-      "resolveJsonModule": true,            // Support importing .json files
-      "noEmitOnError": true,                // Prevent emitting files on errors
-      "moduleResolution": "node",           // Resolve modules in Node.js style
-      "allowSyntheticDefaultImports": true
-    },
-    "include": ["src/**/*.ts"],             // Only include TypeScript files in the src folder
-    "exclude": ["node_modules"],            // Exclude node_modules folder
-  }
-  
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+
+    /* JavaScript Support */
+    "allowJs": true,
+    "checkJs": true,
+
+    /* Interop Constraints */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "useUnknownInCatchVariables": true,
+
+    /* Specify root and output directories */
+    "rootDir": "src",
+    "outDir": "dist",
+
+    /* Required for project references if needed */
+    "composite": true
+  },
+  "include": ["src"],
+  "exclude": ["dist"]
+}

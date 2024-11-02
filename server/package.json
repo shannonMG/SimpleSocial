@@ -1,12 +1,13 @@
 {
-  "name": "server",
+  "name": "simple_social",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/server.ts",
-    "dev": "nodemon src/server.ts",
-    "lint": "eslint src --ext .ts"
+    "dev": "nodemon --watch './**/*.ts' --exec 'ts-node' src/server.ts"
+    
   },
   "keywords": [],
   "author": "",

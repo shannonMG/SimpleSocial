@@ -1,5 +1,5 @@
 // src/components/Signup.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './loginandsignup.module.css';
 
 const Signup = () => {
@@ -7,16 +7,42 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [location, setLocation] = useState('');
   const [timeZone, setTimeZone] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle signup logic
+    setError(null); // Reset error message
+
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, location, time_zone: timeZone }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('token', data.token); // Store the JWT in localStorage
+        alert('Signup successful!');
+        // Optionally, redirect to another page or reset the form
+        setEmail('');
+        setPassword('');
+        setLocation('');
+        setTimeZone('');
+      } else {
+        setError(data.message || 'Signup failed');
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      setError('An error occurred. Please try again later.');
+    }
   };
 
   return (
     <div className={styles.container}>
       <form className={styles.formCard} onSubmit={handleSubmit}>
         <h2 className={styles.heading}>Sign Up</h2>
+        {error && <p className={styles.error}>{error}</p>}
         <input
           type="email"
           placeholder="Email"
@@ -48,9 +74,9 @@ const Signup = () => {
           required
         >
           <option value="">Select a time zone</option>
-          {/* Add your timezone options here */}
           <option value="America/New_York">America/New_York</option>
           <option value="Europe/London">Europe/London</option>
+          {/* Add more time zones as needed */}
         </select>
         <button type="submit" className={styles.button}>Sign Up</button>
       </form>

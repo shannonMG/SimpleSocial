@@ -1,43 +1,34 @@
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const process = require('process');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
-
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
-
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (
-      file.indexOf('.') !== 0 &&
-      file !== basename &&
-      file.slice(-3) === '.js' &&
-      file.indexOf('.test.js') === -1
-    );
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
-
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
-module.exports = db;
+"use strict";
+// src/models/index.ts
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Comment = exports.Post = exports.CircleUsers = exports.Circle = exports.User = exports.sequelize = void 0;
+var connection_js_1 = require("../config/connection.js"); // Import sequelize from configuration
+exports.sequelize = connection_js_1.default;
+var user_1 = require("./user");
+var circle_1 = require("./circle");
+var circleUsers_1 = require("./circleUsers");
+var post_1 = require("./post");
+var comment_1 = require("./comment");
+// Initialize models
+var User = (0, user_1.UserFactory)(connection_js_1.default);
+exports.User = User;
+var Circle = (0, circle_1.CircleFactory)(connection_js_1.default);
+exports.Circle = Circle;
+var CircleUsers = (0, circleUsers_1.CircleUsersFactory)(connection_js_1.default);
+exports.CircleUsers = CircleUsers;
+var Post = (0, post_1.PostFactory)(connection_js_1.default);
+exports.Post = Post;
+var Comment = (0, comment_1.CommentFactory)(connection_js_1.default);
+exports.Comment = Comment;
+// Define associations
+// One-to-Many Associations
+User.hasMany(Post, { foreignKey: 'user_id' });
+Post.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Comment, { foreignKey: 'user_id' });
+Comment.belongsTo(User, { foreignKey: 'user_id' });
+Circle.hasMany(Post, { foreignKey: 'circle_id' });
+Post.belongsTo(Circle, { foreignKey: 'circle_id' });
+Comment.belongsTo(Post, { foreignKey: 'commentable_id', constraints: false });
+// Many-to-Many Association through CircleUsers
+User.belongsToMany(Circle, { through: CircleUsers, foreignKey: 'user_id' });
+Circle.belongsToMany(User, { through: CircleUsers, foreignKey: 'circle_id' });

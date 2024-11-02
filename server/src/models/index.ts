@@ -1,11 +1,11 @@
 // src/models/index.ts
 
 import sequelize from '../config/connection.js'; // Import sequelize from configuration
-import { UserFactory } from './user.js';
-import { CircleFactory } from './circle.js';
-import { CircleUsersFactory } from './circleUsers.js';
-import { PostFactory } from './post.js';
-import { CommentFactory } from './comment.js';
+import { UserFactory }  from './user';
+import { CircleFactory } from './circle';
+import { CircleUsersFactory } from './circleUsers';
+import { PostFactory } from './post';
+import { CommentFactory } from './comment';
 
 // Initialize models
 const User = UserFactory(sequelize);

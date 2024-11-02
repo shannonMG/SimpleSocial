@@ -1,5 +1,6 @@
+// src/interfaces/UserLogin.ts
 export interface UserLogin {
-    username: string | null;
-    password: string | null;
+    email: string;
+    password: string;
   }
   
