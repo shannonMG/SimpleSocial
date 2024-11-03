@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { Circle } from '../models/circle.js';
 import { CircleUsers, CircleUsersFactory } from '../models/circleUsers.js';
 
 // GET /circles/:circleid
@@ -56,7 +55,7 @@ export const createCircleUser = async (req: Request, res: Response) => {
   }
 };
 
-// PUT /post/:id
+// PUT /circleuser/:id
 export const updateCircleUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { user_id, circle_id } = req.body;
@@ -76,7 +75,7 @@ export const updateCircleUser = async (req: Request, res: Response) => {
   }
 };
 
-// DELETE /post/:id
+// DELETE /circleuser/:id
 export const deleteCircleUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {

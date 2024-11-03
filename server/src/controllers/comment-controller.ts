@@ -55,7 +55,7 @@ export const createPostComment = async (req: Request, res: Response) => {
 };
 
 // PUT /posts/:postId/comments
-export const updateComment = async (req: Request, res: Response) => {
+export const updatePostComment = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { user_id,comment_content, commentable_type, commentable_id } = req.body;
   try {
@@ -76,7 +76,7 @@ export const updateComment = async (req: Request, res: Response) => {
 };
 
 // DELETE /post/:id
-export const deleteComment = async (req: Request, res: Response) => {
+export const deletePostComment = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const post = await Comment.findByPk(id);

@@ -1,18 +1,18 @@
 import { Request, Response } from 'express';
 import { Circle } from '../models/circle.js';
-import { User }from '../models/user.js';
+import  User from '../models/user.js';
 
 // GET /circle
 export const getAllCircle = async (_req: Request, res: Response) => {
   try {
     const circles = await Circle.findAll({
-      // include: [
-      //   // {
-      //   //   model: User,
-      //   //   as: 'assignedUser', // This should match the alias defined in the association
-      //   //   attributes: ['username'], // Include only the username attribute
-      //   // },
-      // ],
+      include: [
+        {
+          model: User,
+          as: 'assignedUserId', // This should match the alias defined in the association
+          attributes: ['username'], // Include only the username attribute
+        },
+      ],
     });
     res.json(circles);
   } catch (error: any) {

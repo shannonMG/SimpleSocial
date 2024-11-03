@@ -9,19 +9,19 @@ import {
 
 const router = express.Router();
 
-// GET / - Get all circle
+// GET / - Get all posts
 router.get('/', getAllPosts);
 
-// GET /circle/:id - Get a circle by id
+// GET /post/:id - Get a post by id
 router.get('/:id', getPostById);
 
-// POST /circle - Create a new circle
+// POST /post - Create a new post
 router.post('/', createPost);
 
-// PUT /circle/:id - Update a circle by id
+// PUT /post/:id - Update a post by id
 router.put('/:id', updatePost);
 
-// DELETE /circle/:id - Delete a circle by id
+// DELETE /post/:id - Delete a post by id
 router.delete('/:id', deletePost);
 
 export { router as postRouter };

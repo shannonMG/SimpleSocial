@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Circle } from '../models/circle.js';
-import { Post } from '../models/post'
+import Post from '../models/post'
 
 // GET /posts
 export const getAllPosts = async (_req: Request, res: Response) => {
@@ -10,7 +10,7 @@ export const getAllPosts = async (_req: Request, res: Response) => {
         {
           model: Circle,
           as: 'circle_id', // This should match the alias defined in the association
-          // attributes: ['username'], // not sure if this needs to be user or not 
+          // attributes: ['username'], // not 100% sure what this should be
         },
       ],
     });

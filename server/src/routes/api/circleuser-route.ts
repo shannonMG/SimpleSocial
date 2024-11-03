@@ -9,19 +9,19 @@ import {
 
 const router = express.Router();
 
-// GET / - Get all circleuser
+// GET / - Get all circleusers
 router.get('/', getAllCircleUsers);
 
-// GET /circle/:id - Get a circle by id
-router.get('circles/:id', getCircleUsersById);
+// GET /circleuser/:id - Get a circleuser by id
+router.get('circleuser/:id', getCircleUsersById);
 
-// POST /circle - Create a new circle
+// POST /circleuser - Create a new circleuser
 router.post('/', createCircleUser);
 
-// PUT /circle/:id - Update a circle by id
+// PUT /circleuser/:id - Update a circleuser by id
 router.put('/:id', updateCircleUser);
 
-// DELETE /circle/:id - Delete a circle by id
+// DELETE /circleuser/:id - Delete a circleuser by id
 router.delete('/:id', deleteCircleUser);
 
 export { router as circleuserRouter };
